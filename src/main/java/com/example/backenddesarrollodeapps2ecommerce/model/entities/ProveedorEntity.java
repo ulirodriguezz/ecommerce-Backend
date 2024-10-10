@@ -38,4 +38,6 @@ public class ProveedorEntity {
     public void setCuit(Long cuit) {
         this.cuit = cuit;
     }
+
+
 }

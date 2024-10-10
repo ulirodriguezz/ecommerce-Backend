@@ -34,8 +34,7 @@ public class ProveedoresDAO {
     }
     @Transactional
     public void save (ProveedorEntity proveedor){
-        Session sesionActual = em.unwrap(Session.class);
-        sesionActual.persist(proveedor);
+        daoBase.save(proveedor);
     }
     @Transactional
     public void update(ProveedorEntity nuevoProv, long idProveedor){

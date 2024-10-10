@@ -22,17 +22,14 @@ public class ProductoDAO{
         int PAGESIZE =(int) daoBase.count(); //CAMBIAR PARA PAGINACION
         int startItem = 0;
         if(page != 1)
-            startItem = page  * PAGESIZE + 1 ;
-        try {
-            Session session = em.unwrap(Session.class);
-            Query query = session.createQuery("FROM ProductoEntity AS p WHERE  p.idProducto > 0 order by p.idProducto ASC ", ProductoEntity.class);
-            query.setMaxResults(PAGESIZE).setFirstResult(startItem);
-            System.out.println(query.getResultList().size());
-            return query.getResultList();
-        } catch (Throwable e) {
-            System.out.println("ERROR" + e.getMessage());
-            return null;
-        }
+        startItem = page  * PAGESIZE + 1 ;
+        Session session = em.unwrap(Session.class);
+        Query query = session.createQuery("FROM ProductoEntity AS p WHERE  p.idProducto > 0 order by p.idProducto ASC ", ProductoEntity.class);
+        query.setMaxResults(PAGESIZE).setFirstResult(startItem);
+        if(query.getResultList().isEmpty())
+            throw new EmptyResultDataAccessException("No hay productos",1);
+        return query.getResultList();
+
     }
     @Transactional
     public List<ProductoEntity> buscarEnAlerta(int page, int pageSize) {

@@ -53,6 +53,8 @@ public class ProveedoresService {
         try {
             provDAO.save(prov);
         } catch (Throwable e) {
+            e.printStackTrace();
+            throw new Error("Error inerno");
         }
     }
     public void deleteProveedor(long idProv)

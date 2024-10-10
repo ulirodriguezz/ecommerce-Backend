@@ -9,7 +9,8 @@ import java.util.Set;
 @Table(name = "users")
 public class UsuarioEntity {
     @Id
-    private String username;
+    private String nombreUsuario;
+    private String password;
     @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
     private Set<TarjetaCreditoEntity> creditCard;
     @OneToMany(mappedBy = "nombreUsuario",fetch = FetchType.LAZY)
@@ -20,4 +21,19 @@ public class UsuarioEntity {
     public UsuarioEntity() {
     }
 
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String username) {
+        this.nombreUsuario = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

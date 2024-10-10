@@ -29,9 +29,9 @@ public class AnaliticaController {
             List<VentaEntity> resultList = ventasService.getAllVentas(page);
             return new ResponseEntity<>(resultList, HttpStatus.OK);
         }catch (EmptyResultDataAccessException e){
-            return new ResponseEntity<>("No se encontraron ventas", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new Mensaje("No se encontraron ventas"), HttpStatus.NOT_FOUND);
         }catch (Throwable e) {
-            return new ResponseEntity<>("Error", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(new Mensaje("Error interno"), HttpStatus.NOT_ACCEPTABLE);
         }
 
     }
@@ -42,9 +42,9 @@ public class AnaliticaController {
             List<CompraEntity> resultList = comprasService.getAllCompras(page);
             return new ResponseEntity<>(resultList, HttpStatus.OK);
         }catch (EmptyResultDataAccessException e){
-            return new ResponseEntity<>("No se encontraron compras", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new Mensaje("No se encontraron compras"), HttpStatus.NOT_FOUND);
         }catch (Throwable e) {
-            return new ResponseEntity<>("Error", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(new Mensaje("Error interno"), HttpStatus.NOT_ACCEPTABLE);
         }
 
     }
@@ -52,9 +52,9 @@ public class AnaliticaController {
     public ResponseEntity<?> productGetAll(@RequestBody CompraEntity compra) {
         try {
             comprasService.save(compra);
-            return new ResponseEntity<>("Compra registrada", HttpStatus.OK);
+            return new ResponseEntity<>(new Mensaje("Compra registrada"), HttpStatus.OK);
         }catch (Throwable e) {
-            return new ResponseEntity<>("Error al registrar", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(new Mensaje("Error al registrar"), HttpStatus.NOT_ACCEPTABLE);
         }
 
     }
@@ -64,7 +64,7 @@ public class AnaliticaController {
             BalanceEntity resutlado = balanceService.getBalance();
             return new ResponseEntity<>(resutlado, HttpStatus.OK);
         }catch (Throwable e) {
-            return new ResponseEntity<>("Error", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(new Mensaje("Error interno"), HttpStatus.NOT_ACCEPTABLE);
         }
 
     }

@@ -16,7 +16,10 @@ public class ProductoService {
     public List<ProductoEntity> getAllProducts(int page) {
         try{
             return prodDAO.findAll(page,10);
-        }catch (Throwable e){
+        }catch (EmptyResultDataAccessException e){
+            throw e;
+        }
+        catch (Throwable e){
             e.printStackTrace();
             throw new Error("Ocurrio un error");
         }

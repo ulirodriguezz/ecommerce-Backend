@@ -21,9 +21,9 @@ public class ProveedorController {
     public ResponseEntity<?> proveedoresPost(@RequestBody ProveedorEntity prov) {
         try {
             provService.save(prov);
-            return new ResponseEntity<>("Proveedor registrado correctamente", HttpStatus.OK);
+            return new ResponseEntity<>(new Mensaje("Proveedor registrado correctamente"), HttpStatus.OK);
         } catch (Throwable e) {
-            return new ResponseEntity<>("Error al registrar", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(new Mensaje("Error interno"), HttpStatus.NOT_ACCEPTABLE);
         }
 
     }
@@ -34,10 +34,10 @@ public class ProveedorController {
             List<ProveedorEntity> resultList = provService.getAllProveedores(page);
             return new ResponseEntity<>(resultList, HttpStatus.OK);
         }catch (EmptyResultDataAccessException e){
-            return new ResponseEntity<>("No hay proveedores", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new Mensaje("No se encontraron proveedores"), HttpStatus.NOT_FOUND);
         }
         catch (Throwable e) {
-            return new ResponseEntity<>("Error interno", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(new Mensaje("Error interno"), HttpStatus.NOT_ACCEPTABLE);
         }
 
     }
@@ -47,23 +47,23 @@ public class ProveedorController {
             ProveedorEntity resultado = this.provService.getPorID(idProveedor);
             return new ResponseEntity<>(resultado, HttpStatus.OK);
         }catch (EmptyResultDataAccessException e){
-            return new ResponseEntity<>("No se encontró el proveedor id: "+idProveedor, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new Mensaje("No se encontró el proveedor (id: "+idProveedor+")"), HttpStatus.NOT_FOUND);
         }
         catch (Throwable e) {
-            return new ResponseEntity<>("Error interno", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(new Mensaje("Error interno"), HttpStatus.NOT_ACCEPTABLE);
         }
 
     }
     @PutMapping ("/proveedores/{idProveedor}")
-    public ResponseEntity<?> productUpdate(@RequestBody ProveedorEntity modificado, @PathVariable long idProveedor) {
+    public ResponseEntity<?> provUpdate(@RequestBody ProveedorEntity modificado, @PathVariable long idProveedor) {
         try {
             provService.update(modificado,idProveedor);
-            return new ResponseEntity<>("OK", HttpStatus.OK);
+            return new ResponseEntity<>(new Mensaje("Proveedor modificado con exito"), HttpStatus.OK);
         }catch (EmptyResultDataAccessException e){
-            return new ResponseEntity<>("No se encontró el proveedor", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new Mensaje("No se encontró el proveedor (id: "+idProveedor+")"), HttpStatus.NOT_FOUND);
         }
         catch (Throwable e) {
-            return new ResponseEntity<>("Error interno", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(new Mensaje("Error interno"), HttpStatus.NOT_ACCEPTABLE);
         }
 
     }
@@ -71,12 +71,12 @@ public class ProveedorController {
     public ResponseEntity<?> productUpdate(@PathVariable long idProveedor) {
         try {
             provService.deleteProveedor(idProveedor);
-            return new ResponseEntity<>("OK", HttpStatus.OK);
+            return new ResponseEntity<>(new Mensaje("Proveedor eliminado"), HttpStatus.OK);
         }catch (EmptyResultDataAccessException e){
-            return new ResponseEntity<>("No se encotntró al proveedor ID: "+idProveedor, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new Mensaje("No se encontró el proveedor (id: "+idProveedor+")"), HttpStatus.NOT_FOUND);
         }
         catch (Throwable e) {
-            return new ResponseEntity<>("Error interno", HttpStatus.NOT_ACCEPTABLE);
+            return new ResponseEntity<>(new Mensaje("Error interno"), HttpStatus.NOT_ACCEPTABLE);
         }
 
     }
