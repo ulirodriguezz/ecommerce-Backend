@@ -28,6 +28,7 @@ public class SecurityConfig {
 		http
           .cors(httpSecurityCorsConfigurer -> {
               CorsConfiguration configuration = new CorsConfiguration();
+			  configuration.setAllowedOrigins(Arrays.asList("*"));
               configuration.setAllowedMethods(Arrays.asList("*"));
               configuration.setAllowedHeaders(Arrays.asList("*"));
               configuration.setAllowCredentials(true);
@@ -44,7 +45,7 @@ public class SecurityConfig {
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().requestMatchers("/login");
+		return (web) -> web.ignoring().requestMatchers("/login","/healthcheck");
 	}
 	@Bean
 	public JwtAuthFilter jwtAuth() {
