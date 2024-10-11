@@ -68,4 +68,5 @@ public class VentaEntity {
     public void setProductos(List<Integer> idsProductos) {
         this.productos = idsProductos;
     }
+
 }

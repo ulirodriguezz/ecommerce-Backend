@@ -2,31 +2,34 @@ package com.example.backenddesarrollodeapps2ecommerce.controller;
 
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.UsuarioEntity;
 import com.example.backenddesarrollodeapps2ecommerce.service.UsuariosService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.SecretKey;
 import javax.security.auth.login.CredentialException;
+import java.util.Date;
 
 @RestController
 @RequestMapping("")
 public class AuthController {
+    int MINUTOS_EXPIRACION_TOKEN = 60;
     @Autowired
     UsuariosService usuariosService;
-    @GetMapping("healthcheck")
+    @Autowired
+    private SecretKey secretKey;
+    @GetMapping("/healthcheck")
     public ResponseEntity<?> healthcheck() {
         return new ResponseEntity<>(new Mensaje("UP"), HttpStatus.OK);
     }
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UsuarioEntity credenciales) {
         try{
            UsuarioEntity datosUsuario = usuariosService.validarCredenciales(credenciales);
-            return new ResponseEntity<>(datosUsuario, HttpStatus.OK);
         }catch (CredentialException e){
             return new ResponseEntity<>(new Mensaje(e.getMessage()), HttpStatus.UNAUTHORIZED);
         }
@@ -36,6 +39,13 @@ public class AuthController {
         catch (Throwable e){
             return new ResponseEntity<>(new Mensaje("Error interno"), HttpStatus.NOT_ACCEPTABLE);
         }
+        String token = Jwts.builder().setSubject(credenciales.getNombreUsuario())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + MINUTOS_EXPIRACION_TOKEN * 60 * 1000))
+                .signWith(secretKey, SignatureAlgorithm.HS256).compact();
+
+
+        return new ResponseEntity<>(new Token(token), HttpStatus.OK);
     }
 
 }

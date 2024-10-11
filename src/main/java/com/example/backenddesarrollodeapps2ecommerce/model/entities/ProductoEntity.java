@@ -150,4 +150,5 @@ public class ProductoEntity {
     public void setIdProveedor(Long idProveedor) {
         this.idProveedor = idProveedor;
     }
+
 }

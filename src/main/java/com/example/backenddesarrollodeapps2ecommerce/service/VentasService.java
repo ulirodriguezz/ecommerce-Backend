@@ -27,4 +27,14 @@ public class VentasService {
 
 
     }
+
+    public void save(VentaEntity venta) {
+        try{
+            ventasDAO.save(venta);
+        }catch (Throwable e){
+            e.printStackTrace();
+            throw new Error("Ocurrió un error");
+        }
+
+    }
 }

@@ -35,6 +35,16 @@ public class AnaliticaController {
         }
 
     }
+    @PostMapping("/ventas")
+    public ResponseEntity<?> postVentas(@RequestBody VentaEntity venta) {
+        try {
+            ventasService.save(venta);
+            return new ResponseEntity<>(new Mensaje("venta registrada"), HttpStatus.OK);
+        }catch (Throwable e) {
+            return new ResponseEntity<>(new Mensaje("Error al registrar"), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+    }
     @GetMapping("/compras")
     public ResponseEntity<?> comprasGetAll(/*@PathVariable int page*/) {
         try {
@@ -49,7 +59,7 @@ public class AnaliticaController {
 
     }
     @PostMapping("/compras")
-    public ResponseEntity<?> productGetAll(@RequestBody CompraEntity compra) {
+    public ResponseEntity<?> postCompras(@RequestBody CompraEntity compra) {
         try {
             comprasService.save(compra);
             return new ResponseEntity<>(new Mensaje("Compra registrada"), HttpStatus.OK);

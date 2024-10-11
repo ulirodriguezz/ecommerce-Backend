@@ -1,9 +1,11 @@
 package com.example.backenddesarrollodeapps2ecommerce.model.dao;
 
+import com.example.backenddesarrollodeapps2ecommerce.model.entities.BalanceEntity;
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.VentaEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.transaction.Transactional;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -35,5 +37,17 @@ public class VentasDAO {
 
 
     }
-
+    @Transactional
+    public void save(VentaEntity venta) {
+        try {
+            Session sesionActual   = em.unwrap(Session.class);
+            sesionActual.persist(venta);
+            BalanceEntity balance = sesionActual.find(BalanceEntity.class,1);
+            balance.setMontoCompras(balance.getMontoVentas() + venta.getMontoTotal());
+            sesionActual.persist(balance);
+        }catch (Throwable e){
+            e.printStackTrace();
+            throw new Error("Ocurrió un error");
+        }
+    }
 }
