@@ -9,7 +9,7 @@ phases:
       - echo Setting repo URI...
       - REPOSITORY_URI=586794469892.dkr.ecr.us-east-1.amazonaws.com/backend-imagenes
       - echo Setting image tag...
-      - IMAGE_TAG=build-$(echo CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
+      - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
   build:
     commands:
       - echo building and tagging image
