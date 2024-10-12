@@ -32,7 +32,8 @@ public class SecurityConfig {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(AbstractHttpConfigurer::disable);
 		http.cors(c->c.configurationSource(corsConfigurationSource()));
-		http.authorizeHttpRequests((authz) ->authz.anyRequest().authenticated())
+		http.authorizeHttpRequests((authz) ->authz.requestMatchers("/login").permitAll()
+						.anyRequest().authenticated())
 				.addFilterBefore(jwtAuth(), UsernamePasswordAuthenticationFilter.class)
 		.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		return http.build();
@@ -50,7 +51,7 @@ public class SecurityConfig {
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().requestMatchers("/login","/healthcheck");
+		return (web) -> web.ignoring().requestMatchers("/healthcheck");
 	}
 	@Bean
 	public JwtAuthFilter jwtAuth() {
