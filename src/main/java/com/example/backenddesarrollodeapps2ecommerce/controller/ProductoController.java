@@ -13,8 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("")
 public class ProductoController {
-    @Autowired
-    ProductoService prodService;
 
     @PostMapping("/productos")
     public ResponseEntity<?> productPost(@RequestBody ProductoEntity product) {
@@ -26,6 +24,8 @@ public class ProductoController {
         }
 
     }
+    @Autowired
+    ProductoService prodService;
     @GetMapping ("/productos")
     public ResponseEntity<?> productGetAll(/*@PathVariable int page*/) {
         try {
