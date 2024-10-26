@@ -1,12 +1,10 @@
 package com.example.backenddesarrollodeapps2ecommerce.model.dao;
 
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.BalanceEntity;
-import com.example.backenddesarrollodeapps2ecommerce.model.entities.VentaEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.hibernate.Session;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,6 +26,7 @@ public class BalanceDAO {
             balance.setMontoVentas(0);
             sesionActual.persist(balance);
         }
+
 
         return balance;
     }
