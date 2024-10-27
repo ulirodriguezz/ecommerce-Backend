@@ -12,7 +12,7 @@ phases:
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
   build:
     commands:
-      - DIRECTORIO_ACTUAL = $(pwd)
+      - DIRECTORIO_ACTUAL=$(pwd)
       - echo INSTALANDO 7zZIP...
       - apt install p7zip-full
       - echo Descargando paquetes Core...
