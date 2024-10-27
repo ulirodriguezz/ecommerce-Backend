@@ -17,7 +17,6 @@ phases:
       - wget https://github.com/matiasfelau/sender-java/releases/download/Temp/Squad1CoreSender-Java-V1.2.1.tar
       - tar -xvf Squad1CoreSender-Java-V1.2.1.tar
       - echo Descargando paquetes Core...
-      - 7z x  Squad1CoreSender-Java-V1.2.1.7z
       - echo building and tagging image
       - echo running mvn clean install
       - mvn clean install
