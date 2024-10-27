@@ -12,9 +12,18 @@ phases:
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
   build:
     commands:
+      - DIRECTORIO_ACTUAL = $(pwd)
+      - echo INSTALANDO 7zZIP...
+      - apt install p7zip-full
+      - echo Descargando paquetes Core...
+      - wget https://github.com/matiasfelau/sender-java/releases/download/latest/Squad1CoreSender-Java-V1.2.1.7z
+      - 7z x  Squad1CoreSender-Java-V1.2.1.7z
       - echo building and tagging image
       - echo running mvn clean install
       - mvn clean install
+      - mvn install:install-file -Dfile=$DIRECTORIO_ACTUAL/sender-java-1.2.1.jar -DgroupId="ar.edu.uade" -DartifactId=sender-java -Dversion="1.2.1" -Dpackaging=jar
+      - mvn install:install-file -Dfile=$DIRECTORIO_ACTUAL/sender-java-1.2.1-javadoc.jar -DgroupId="ar.edu.uade" -DartifactId=sender-java -Dversion="1.2.1" -Dpackaging=jar -Dclassifier=javadoc
+      - mvn install:install-file -Dfile=$DIRECTORIO_ACTUAL/sender-java-1.2.1-sources.jar -DgroupId="ar.edu.uade" -DartifactId=sender-java -Dversion="1.2.1" -Dpackaging=jar -Dclassifier=sources
       - echo building Docker image...
       - docker build -t $REPOSITORY_URI:latest .
       - echo tagging docker image...
