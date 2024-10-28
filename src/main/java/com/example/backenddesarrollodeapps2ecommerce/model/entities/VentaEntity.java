@@ -69,4 +69,16 @@ public class VentaEntity {
         this.productos = idsProductos;
     }
 
+    @Override
+    public String toString() {
+        return "VentaEntity{" +
+                "idVenta=" + idVenta +
+                ", nombreUsuario='" + nombreUsuario + '\'' +
+                ", fecha=" + fecha +
+                ", montoTotal=" + montoTotal +
+                ", cantidadDeProductos=" + cantidadDeProductos +
+                ", productos=" + productos +
+                ", productosRel=" + productosRel +
+                '}';
+    }
 }
