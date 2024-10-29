@@ -18,6 +18,7 @@ public class VentaEntity {
     private Integer cantidadDeProductos;
     @ElementCollection
     private List<Integer> productos;
+    private EstadoVenta estado;
     @ManyToMany
     List<ProductoEntity> productosRel;
 
@@ -69,6 +70,14 @@ public class VentaEntity {
         this.productos = idsProductos;
     }
 
+    public EstadoVenta getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoVenta estado) {
+        this.estado = estado;
+    }
+
     @Override
     public String toString() {
         return "VentaEntity{" +
@@ -78,6 +87,7 @@ public class VentaEntity {
                 ", montoTotal=" + montoTotal +
                 ", cantidadDeProductos=" + cantidadDeProductos +
                 ", productos=" + productos +
+                ", estado=" + estado +
                 ", productosRel=" + productosRel +
                 '}';
     }

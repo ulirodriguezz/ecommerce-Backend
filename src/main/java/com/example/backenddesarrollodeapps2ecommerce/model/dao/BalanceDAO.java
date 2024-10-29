@@ -7,8 +7,6 @@ import jakarta.transaction.Transactional;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public class BalanceDAO {
     @PersistenceContext

@@ -2,6 +2,7 @@ package com.example.backenddesarrollodeapps2ecommerce;
 
 import ar.edu.uade.*;
 import com.example.backenddesarrollodeapps2ecommerce.core.dtos.ProductoDTO;
+import com.example.backenddesarrollodeapps2ecommerce.core.dtos.Utilidades;
 import com.example.backenddesarrollodeapps2ecommerce.model.dao.LogDAO;
 import com.example.backenddesarrollodeapps2ecommerce.model.dao.ProductoDAO;
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.LogEntity;
@@ -75,12 +76,12 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
                             }
                             String mensajeCompleto = String.join("--!--##-->>DELIMITER<<--##--!--", mensajes);
                             try{
-                                enviarMensaje(broker,mensajeCompleto,Modules.USUARIO,"Productos");
+                                Utilidades.enviarMensaje(mensajeCompleto,Modules.USUARIO,"Productos");
                                 System.out.println(mensajeCompleto);
                                 System.out.println("SE MANDO EL MENSAJE");
                             }catch (Exception e){
                                 System.out.println("Ocurrio un error");
-                                crearLog(applicationContext,"Ocurrió un error al enviar el lsitado de productos");
+                                Utilidades.crearLog(applicationContext,"Ocurrió un error al enviar el lsitado de productos");
                             }
 
 
@@ -97,44 +98,8 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
         //Comienza a consumir utilizando un hilo secundario
         consumer.consume(consumerConnection, Modules.E_COMMERCE);
 
-
-        VentaEntity venta = new VentaEntity();
-        venta.setFecha(new Date());
-        venta.setProductos(List.of(1,2,3));
-        venta.setCantidadDeProductos(3);
-        venta.setMontoTotal(1000);
-        venta.setNombreUsuario("carlitos");
-        //enviarMensaje(broker,venta,Modules.E_COMMERCE,"Venta");
-
-        //Crea la instancia para poder publicar un mensaje
-
-
     }
-    public static void enviarMensaje(Broker broker, Object mensaje, Modules moduloDestino,String usecase) throws Exception {
-        Connection publisherConnection = broker.startConnection();
 
-        Publisher publisher = new Publisher(Modules.USUARIO);
 
-        publisher.publish(publisherConnection,Utilities.convertClass(mensaje), moduloDestino, usecase, "ss", Types.JSON);
-
-        broker.endConnection(publisherConnection);
-
-    }
-    public static void enviarMensaje(Broker broker, String mensaje, Modules moduloDestino,String usecase) throws Exception {
-        Connection publisherConnection = broker.startConnection();
-
-        Publisher publisher = new Publisher(Modules.USUARIO);
-
-        publisher.publish(publisherConnection,mensaje, moduloDestino, usecase, "ss", Types.JSON);
-
-        broker.endConnection(publisherConnection);
-
-    }
-    public static void crearLog(ApplicationContext applicationContext, String mensaje){
-        LogDAO logDAO = applicationContext.getBean(LogDAO.class);
-        LogEntity log = new LogEntity();
-        log.setMensaje(mensaje);
-        logDAO.save(log);
-    }
 
 }

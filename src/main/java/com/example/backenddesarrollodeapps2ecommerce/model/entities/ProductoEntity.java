@@ -23,6 +23,7 @@ public class ProductoEntity {
     private Float descuentoNoSocios;
     private Categoria categoria;
     private Long idProveedor;
+    private Double totalVendido;
     @ElementCollection
     private Set<String> caracteristicas;
     @ElementCollection
@@ -151,4 +152,11 @@ public class ProductoEntity {
         this.idProveedor = idProveedor;
     }
 
+    public Double getTotalVendido() {
+        return totalVendido;
+    }
+
+    public void setTotalVendido(Double totalVendido) {
+        this.totalVendido = totalVendido;
+    }
 }

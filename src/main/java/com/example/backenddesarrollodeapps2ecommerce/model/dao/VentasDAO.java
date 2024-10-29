@@ -1,7 +1,9 @@
 package com.example.backenddesarrollodeapps2ecommerce.model.dao;
 
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.BalanceEntity;
+import com.example.backenddesarrollodeapps2ecommerce.model.entities.ProductoEntity;
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.VentaEntity;
+import com.example.backenddesarrollodeapps2ecommerce.model.entities.VentasPorCategoria;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -9,10 +11,8 @@ import jakarta.transaction.Transactional;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Repository;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 @Repository
@@ -21,6 +21,8 @@ public class VentasDAO {
     EntityManager em;
     @Autowired
     IVentasDAOBase daoBase;
+    @Autowired
+    ProductoDAO prodDAO;
 
     public List<VentaEntity> findAll(int page, int pageSize)
     {
@@ -39,11 +41,38 @@ public class VentasDAO {
     }
     @Transactional
     public void save(VentaEntity venta) {
+        Session sesionActual   = em.unwrap(Session.class);
+        try{
+            for(Integer producto : venta.getProductos()){
+                double montoProducto;
+                ProductoEntity prod = prodDAO.getPorID(producto);
+                //if(producto == null) --> exception
+                //HACER EL CALCULO DEL PRECIO
+                montoProducto = prod.getPrecioVenta();
+                VentasPorCategoria vpc = sesionActual.createQuery("from VentasPorCategoria where nombreCategoria=:nombreCat",VentasPorCategoria.class)
+                        .setParameter("nombreCat",prod.getCategoria().toString()).getSingleResult();
+                if(vpc == null){
+                    VentasPorCategoria nuevoVpc = new VentasPorCategoria();
+                    nuevoVpc.setNombreCategoria(prod.getCategoria().toString());
+                    nuevoVpc.setTotalVendido(montoProducto);
+                    em.persist(nuevoVpc);
+                }else {
+                    vpc.setTotalVendido(vpc.getTotalVendido() + montoProducto);
+                    em.persist(vpc);
+                }
+
+            }
+        }catch (EmptyResultDataAccessException e){
+           throw e;
+        }catch (Exception e){
+            throw  e;
+        }
         try {
-            Session sesionActual   = em.unwrap(Session.class);
+
             sesionActual.persist(venta);
             BalanceEntity balance = sesionActual.find(BalanceEntity.class,1);
             balance.setMontoCompras(balance.getMontoVentas() + venta.getMontoTotal());
+
             sesionActual.persist(balance);
         }catch (Throwable e){
             e.printStackTrace();

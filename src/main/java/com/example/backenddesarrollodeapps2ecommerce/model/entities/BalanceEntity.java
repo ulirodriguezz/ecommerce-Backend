@@ -11,7 +11,11 @@ public class BalanceEntity {
     private int id;
     private double montoVentas;
     private double montoCompras;
-    private long cantVentas;
+    private double cantVentas;
+    private double vendidoCamisetas;
+    private double vendidoCalzados;
+    private double vendidoCamperas;
+    private double vendidoBuzos;
 
     public BalanceEntity() {
     }
@@ -32,15 +36,47 @@ public class BalanceEntity {
         this.montoCompras = montoCompras;
     }
 
-    public long getCantVentas() {
+    public double getCantVentas() {
         return cantVentas;
     }
 
-    public void setCantVentas(long cantVentas) {
+    public void setCantVentas(double cantVentas) {
         this.cantVentas = cantVentas;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public double getVendidoCamisetas() {
+        return vendidoCamisetas;
+    }
+
+    public void setVendidoCamisetas(double vendidoCamisetas) {
+        this.vendidoCamisetas = vendidoCamisetas;
+    }
+
+    public double getVendidoCalzados() {
+        return vendidoCalzados;
+    }
+
+    public void setVendidoCalzados(double vendidoCalzados) {
+        this.vendidoCalzados = vendidoCalzados;
+    }
+
+    public double getVendidoCamperas() {
+        return vendidoCamperas;
+    }
+
+    public void setVendidoCamperas(double vendidoCamperas) {
+        this.vendidoCamperas = vendidoCamperas;
+    }
+
+    public double getVendidoBuzos() {
+        return vendidoBuzos;
+    }
+
+    public void setVendidoBuzos(double vendidoBuzos) {
+        this.vendidoBuzos = vendidoBuzos;
     }
 }
