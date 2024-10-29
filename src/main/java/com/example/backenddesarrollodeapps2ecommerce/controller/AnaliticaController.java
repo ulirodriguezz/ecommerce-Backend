@@ -86,7 +86,7 @@ public class AnaliticaController {
             Connection publisherConnection = broker.startConnection();
 
             //Crea la instancia para poder publicar un mensaje
-            Publisher publisher = new Publisher(Modules.E_COMMERCE);
+            Publisher publisher = new Publisher(Modules.USUARIO);
 
             //El token es el JWT que entrega Gestion_Interna
             //Types presenta 3 variables, String, JSON o Array, utilizado para un mejor manejo del mensaje.
