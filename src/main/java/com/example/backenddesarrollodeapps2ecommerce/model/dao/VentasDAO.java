@@ -46,7 +46,11 @@ public class VentasDAO {
             for(Integer producto : venta.getProductos()){
                 double montoProducto;
                 ProductoEntity prod = prodDAO.getPorID(producto);
-                //if(producto == null) --> exception
+                if(prod == null)
+                    throw new EmptyResultDataAccessException("No existe el prod",1);
+                if(prod.getStockActual() == 0)
+                    throw new Exception("No hay stcok");
+                prod.setStockActual(prod.getStockActual() - 1);
                 //HACER EL CALCULO DEL PRECIO
                 montoProducto = prod.getPrecioVenta();
                 VentasPorCategoria vpc = sesionActual.createQuery("from VentasPorCategoria where nombreCategoria=:nombreCat",VentasPorCategoria.class)
@@ -63,12 +67,11 @@ public class VentasDAO {
 
             }
         }catch (EmptyResultDataAccessException e){
-           throw e;
+           System.out.println("No existe el producto");
         }catch (Exception e){
-            throw  e;
+            throw new Error("Error");
         }
         try {
-
             sesionActual.persist(venta);
             BalanceEntity balance = sesionActual.find(BalanceEntity.class,1);
             balance.setMontoCompras(balance.getMontoVentas() + venta.getMontoTotal());
