@@ -37,8 +37,13 @@ public class ProductoDTO {
         this.descuentoNoSocios = producto.getDescuentoNoSocios();
         this.categoria = producto.getCategoria().toString();
         this.caracteristicas = new HashSet<>();
-        Set<String> talles = new HashSet<>();
-        this.talles = talles;
+        for(String c : producto.getCaracteristicas()){
+            this.caracteristicas.add(c);
+        }
+        this.talles = new HashSet<>();
+        for(TallesEnum t : producto.getTalles()){
+            this.talles.add(t.toString());
+        }
      }
 
     public long getIdProducto() {

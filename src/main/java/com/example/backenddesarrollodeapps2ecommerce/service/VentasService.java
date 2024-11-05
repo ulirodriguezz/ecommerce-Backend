@@ -27,6 +27,20 @@ public class VentasService {
 
 
     }
+    public List<VentaEntity> getVentasByUsername(String username){
+        try {
+            return ventasDAO.findByUsername(username);
+
+        }catch (EmptyResultDataAccessException e){
+            throw e;
+        }
+        catch (Throwable e){
+            e.printStackTrace();
+            throw new Error("Ocurrió un error");
+        }
+
+
+    }
 
     public void save(VentaEntity venta) {
         try{

@@ -24,6 +24,7 @@ public class VentasDAO {
     @Autowired
     ProductoDAO prodDAO;
 
+    @Transactional
     public List<VentaEntity> findAll(int page, int pageSize)
     {
         int PAGESIZE =(int) daoBase.count(); //CAMBIAR PARA PAGINACION
@@ -38,6 +39,18 @@ public class VentasDAO {
         return query.getResultList();
 
 
+    }
+    @Transactional
+    public List<VentaEntity> findByUsername(String username)
+    {
+        List<VentaEntity> ventas;
+        Session sesionActual = em.unwrap(Session.class);
+        Query query = sesionActual.createQuery("FROM VentaEntity AS v  where v.nombreUsuario =:username ORDER BY v.fecha ASC", VentaEntity.class);
+        query.setParameter("username",username);
+        ventas = query.getResultList();
+        if(ventas.isEmpty())
+            throw new EmptyResultDataAccessException("No hay ventas",1);
+        return ventas;
     }
     @Transactional
     public void save(VentaEntity venta) {
@@ -69,7 +82,7 @@ public class VentasDAO {
         }catch (EmptyResultDataAccessException e){
            System.out.println("No existe el producto");
         }catch (Exception e){
-            throw new Error("Error");
+            System.out.println("ALGUN ERROR CON LOS PRODUCTOS DE LA VENTA");
         }
         try {
             sesionActual.persist(venta);
@@ -82,4 +95,6 @@ public class VentasDAO {
             throw new Error("Ocurrió un error");
         }
     }
+
+
 }

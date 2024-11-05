@@ -1,28 +1,44 @@
-package com.example.backenddesarrollodeapps2ecommerce.model.entities;
+package com.example.backenddesarrollodeapps2ecommerce.core.dtos;
 
-import jakarta.persistence.*;
+import com.example.backenddesarrollodeapps2ecommerce.model.entities.EstadoVenta;
+import com.example.backenddesarrollodeapps2ecommerce.model.entities.ProductoEntity;
+import com.example.backenddesarrollodeapps2ecommerce.model.entities.VentaEntity;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.ManyToMany;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(name = "ventas")
-public class VentaEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="id_venta")
+public class VentaDTO {
+
     private long idVenta;
     private String nombreUsuario;
     private Date fecha;
     private double montoTotal;
     private Integer cantidadDeProductos;
-    @ElementCollection(fetch = FetchType.EAGER)
     private List<Integer> productos;
-    private EstadoVenta estado;
-    @ManyToMany
-    List<ProductoEntity> productosRel;
+    private String estado;
 
-    public VentaEntity() {
+    public VentaDTO() {
+    }
+
+    public VentaDTO(VentaEntity v) {
+        this.idVenta = v.getIdVenta();
+        this.nombreUsuario = v.getNombreUsuario();
+        this.fecha = v.getFecha();
+        this.montoTotal = v.getMontoTotal();
+        this.cantidadDeProductos = v.getCantidadDeProductos();
+        if(v.getProductos() != null){
+            this.productos = v.getProductos();
+        }
+        else{
+            this.productos=new ArrayList<>();
+        }
+
+        if(v.getEstado() == null)
+            v.setEstado(EstadoVenta.PAGADO);
+        this.estado = v.getEstado().toString();
     }
 
     public long getIdVenta() {
@@ -73,24 +89,24 @@ public class VentaEntity {
         this.productos = productos;
     }
 
-    public EstadoVenta getEstado() {
+    public String getEstado() {
         return estado;
     }
 
-    public void setEstado(EstadoVenta estado) {
+    public void setEstado(String estado) {
         this.estado = estado;
     }
 
     @Override
     public String toString() {
-        return "VentaEntity{" +
+        return "VentaDTO{" +
                 "idVenta=" + idVenta +
                 ", nombreUsuario='" + nombreUsuario + '\'' +
                 ", fecha=" + fecha +
                 ", montoTotal=" + montoTotal +
                 ", cantidadDeProductos=" + cantidadDeProductos +
                 ", productos=" + productos +
-                ", estado=" + estado +
+                ", estado='" + estado + '\'' +
                 '}';
     }
 }

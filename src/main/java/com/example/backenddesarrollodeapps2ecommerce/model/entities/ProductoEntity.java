@@ -24,9 +24,9 @@ public class ProductoEntity {
     private Categoria categoria;
     private Long idProveedor;
     private Double totalVendido;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> caracteristicas;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<TallesEnum> talles;
     @ManyToOne
     @JoinColumn(name = "idProveedor",referencedColumnName = "idProveedor",insertable = false,updatable = false)

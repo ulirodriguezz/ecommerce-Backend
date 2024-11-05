@@ -47,7 +47,7 @@ public class AnaliticaController {
                 "8^3&927#!q4W&649^%"
         );
         try {
-            Utilidades.enviarMensaje(broker,Utilities.convertClass(venta),Modules.USUARIO,Modules.E_COMMERCE,"Venta");
+            Utilidades.enviarMensaje(broker,Utilities.convertClass(venta),Modules.USUARIO,Modules.E_COMMERCE,"Venta","Venta");
             return new ResponseEntity<>(new Mensaje("venta registrada"), HttpStatus.OK);
         }catch (Throwable e) {
             return new ResponseEntity<>(new Mensaje("Error al registrar"), HttpStatus.NOT_ACCEPTABLE);
@@ -82,6 +82,7 @@ public class AnaliticaController {
 
         try {
             BalanceEntity resutlado = balanceService.getBalance();
+            Utilidades.enviarMensaje("Mensaje de prueba",Modules.USUARIO,"Prueba","null");
             return new ResponseEntity<>(resutlado, HttpStatus.OK);
 
         }catch (Throwable e) {
