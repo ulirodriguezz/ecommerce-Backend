@@ -2,13 +2,9 @@ package com.example.backenddesarrollodeapps2ecommerce;
 
 import ar.edu.uade.*;
 import com.example.backenddesarrollodeapps2ecommerce.core.dtos.ProductoDTO;
-import com.example.backenddesarrollodeapps2ecommerce.core.dtos.Utilidades;
+import com.example.backenddesarrollodeapps2ecommerce.core.Utilidades;
 import com.example.backenddesarrollodeapps2ecommerce.core.dtos.VentaDTO;
-import com.example.backenddesarrollodeapps2ecommerce.model.dao.LogDAO;
-import com.example.backenddesarrollodeapps2ecommerce.model.dao.ProductoDAO;
-import com.example.backenddesarrollodeapps2ecommerce.model.entities.LogEntity;
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.ProductoEntity;
-import com.example.backenddesarrollodeapps2ecommerce.model.entities.TallesEnum;
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.VentaEntity;
 import com.example.backenddesarrollodeapps2ecommerce.service.ProductoService;
 import com.example.backenddesarrollodeapps2ecommerce.service.VentasService;
@@ -19,9 +15,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @SpringBootApplication
@@ -50,8 +44,6 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
                     if(body.getUseCase().contentEquals("Prueba")){
                         System.out.println(payload);
                     }
-
-
                     if(body.getOrigin().contentEquals(Modules.USUARIO.toString().toLowerCase())){
                         //Llega un mensaje desde el modulo usuarios
 
@@ -71,7 +63,14 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
                             System.out.println("ME PIDIERON LA LISTA");
                             List<String> mensajes = new ArrayList<>();
                             ProductoService productoService = applicationContext.getBean(ProductoService.class);
-                            List<ProductoEntity> productos = productoService.getAllProducts(1);
+                            List<ProductoEntity> productos = new ArrayList<>();
+                            try{
+                                productos = productoService.getAllProducts(1);
+                            }catch (EmptyResultDataAccessException e){
+                                Utilidades.enviarMensaje("No hay productos",Modules.USUARIO,"Productos","Error");
+                            }catch (Throwable e){
+                                Utilidades.enviarMensaje("Hubo un error",Modules.USUARIO,"Productos","Error");
+                            }
                             for (ProductoEntity p : productos){
                                 ProductoDTO dto = new ProductoDTO(p);
                                 String m = Utilities.convertClass(dto);

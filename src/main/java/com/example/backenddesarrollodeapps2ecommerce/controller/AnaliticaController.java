@@ -1,13 +1,12 @@
 package com.example.backenddesarrollodeapps2ecommerce.controller;
 import ar.edu.uade.*;
-import com.example.backenddesarrollodeapps2ecommerce.core.dtos.Utilidades;
+import com.example.backenddesarrollodeapps2ecommerce.core.Utilidades;
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.BalanceEntity;
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.CompraEntity;
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.VentaEntity;
 import com.example.backenddesarrollodeapps2ecommerce.service.BalanceService;
 import com.example.backenddesarrollodeapps2ecommerce.service.ComprasService;
 import com.example.backenddesarrollodeapps2ecommerce.service.VentasService;
-import com.rabbitmq.client.Connection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;

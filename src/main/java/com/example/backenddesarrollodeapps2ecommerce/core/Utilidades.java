@@ -1,4 +1,4 @@
-package com.example.backenddesarrollodeapps2ecommerce.core.dtos;
+package com.example.backenddesarrollodeapps2ecommerce.core;
 
 import ar.edu.uade.*;
 import com.example.backenddesarrollodeapps2ecommerce.model.dao.LogDAO;
