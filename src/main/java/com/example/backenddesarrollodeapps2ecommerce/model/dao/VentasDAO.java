@@ -45,8 +45,7 @@ public class VentasDAO {
     {
         List<VentaEntity> ventas;
         Session sesionActual = em.unwrap(Session.class);
-        Query query = sesionActual.createQuery("FROM VentaEntity AS v  where v.nombreUsuario =:username ORDER BY v.fecha ASC", VentaEntity.class);
-        query.setParameter("username",username);
+        Query query = sesionActual.createQuery("FROM VentaEntity AS v  where v.nombreUsuario ="+ username+ " ORDER BY v.fecha ASC", VentaEntity.class);
         ventas = query.getResultList();
         if(ventas.isEmpty())
             throw new EmptyResultDataAccessException("No hay ventas",1);

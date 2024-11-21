@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContext;
 import java.lang.reflect.Type;
 
 public final class Utilidades {
+    private static String USER = "{ user : e_commerce, password : 8^3&927#!q4W&649^% }";
 
     public static void enviarMensaje(Broker broker, String mensaje, Modules moduloPublisher, Modules moduloDestino, String usecase, String target) throws Exception {
 
@@ -18,7 +19,7 @@ public final class Utilidades {
 
         System.out.println("Mensaje: "+ mensaje);
 
-        publisher.publish(publisherConnection,mensaje, moduloDestino, usecase, "ss", Types.JSON,target,"600");
+        publisher.publish(publisherConnection,mensaje, moduloDestino, usecase, "ss", Types.JSON,target,"600",USER);
 
         broker.endConnection(publisherConnection);
 
@@ -35,7 +36,7 @@ public final class Utilidades {
         Publisher publisher = new Publisher(Modules.E_COMMERCE);
         System.out.println("Mensaje: "+ mensaje);
 
-        publisher.publish(publisherConnection,mensaje, moduloDestino, usecase, "", Types.JSON,target,"600");
+        publisher.publish(publisherConnection,mensaje, moduloDestino, usecase, "", Types.JSON,target,"600",USER);
 
         broker.endConnection(publisherConnection);
 
@@ -52,7 +53,7 @@ public final class Utilidades {
         Publisher publisher = new Publisher(Modules.E_COMMERCE);
         System.out.println("Mensaje: "+ mensaje);
 
-        publisher.publish(publisherConnection,mensaje, moduloDestino, usecase, "", Types.ARRAY,target,"600");
+        publisher.publish(publisherConnection,mensaje, moduloDestino, usecase, "", Types.ARRAY,target,"600",USER);
 
         broker.endConnection(publisherConnection);
 
@@ -65,9 +66,30 @@ public final class Utilidades {
 
         System.out.println("Mensaje: "+ mensaje);
 
-        publisher.publish(publisherConnection,mensaje, moduloDestino, usecase, "", Types.JSON,target,status);
+        publisher.publish(publisherConnection,mensaje, moduloDestino, usecase, "", Types.JSON,target,status,USER);
 
         broker.endConnection(publisherConnection);
+
+    }
+    public static void logingInterno(Broker broker, String username, String email, String password, String nombre){
+        String json = "{"+" user : "+username+","+"password : "+password+"}";
+        String response;
+        Connection connection ;
+        try {
+            connection = broker.startConnection();
+        }catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ERROR EN EL LOGIN CORE");
+            return;
+        }
+        Authenticator auth = new Authenticator(Modules.E_COMMERCE);
+        try{
+            response = auth.authenticate(connection,json);
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("ERROR EN EL LOGIN CORE (Response)");
+        }
+        broker.endConnection(connection);
 
     }
     public static void crearLog(ApplicationContext applicationContext, String mensaje){

@@ -1,5 +1,8 @@
 package com.example.backenddesarrollodeapps2ecommerce.controller;
 
+import ar.edu.uade.Broker;
+import ar.edu.uade.Modules;
+import com.example.backenddesarrollodeapps2ecommerce.core.dtos.Utilidades;
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.UsuarioEntity;
 import com.example.backenddesarrollodeapps2ecommerce.service.UsuariosService;
 import io.jsonwebtoken.Jwts;
@@ -46,6 +49,21 @@ public class AuthController {
 
 
         return new ResponseEntity<>(new Token(token), HttpStatus.OK);
+    }
+    @PostMapping("/mensajeGi")
+    public ResponseEntity<?> mensajeGI(@RequestBody String username) {
+        Broker broker = new Broker(
+                "3.142.225.39",
+                5672,
+                "e_commerce",
+                "8^3&927#!q4W&649^%"
+        );
+        try {
+            Utilidades.enviarMensaje(broker,username, Modules.GESTION_INTERNA,Modules.E_COMMERCE,"Reclamos","Pedido");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return new ResponseEntity<>(new Mensaje("OK"), HttpStatus.OK);
     }
 
 }

@@ -51,6 +51,43 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
                         System.out.println(payload);
                     }
 
+                    if(body.getOrigin().contentEquals(Modules.GESTION_INTERNA.toString().toLowerCase())){
+                        System.out.println("Pedido desde gestion interna...");
+                        System.out.println("Username: "+ payload);
+                        List<String> mensajes = new ArrayList<>();
+                        List<VentaEntity> pedidos = new ArrayList<>();
+                        String username = payload;
+                        try {
+                            pedidos = ventasService.getVentasByUsername(payload);
+                        }catch (EmptyResultDataAccessException e){
+                            Utilidades.enviarMensaje("No se encontraron pedidos",Modules.GESTION_INTERNA,"Pedidos","Error");
+                            return;
+                        }
+                        catch (Exception e){
+                            Utilidades.enviarMensaje("Otro error",Modules.GESTION_INTERNA,"Pedidos","Error");
+                            return;
+                        }
+                        if(pedidos.size() == 1){
+                            Utilidades.enviarMensaje(Utilities.convertClass(new VentaDTO(pedidos.get(0))),Modules.GESTION_INTERNA,"Pedidos","Pedido");
+                        }
+                        else {
+                            for(VentaEntity p: pedidos){
+                                VentaDTO dto = new VentaDTO(p);
+                                String m = Utilities.convertClass(dto);
+                                mensajes.add(m);
+                            }
+                            String mensajeCompleto = String.join("--!--##-->>DELIMITER<<--##--!--", mensajes);
+                            try{
+                                Utilidades.enviarArray(mensajeCompleto,Modules.GESTION_INTERNA,"Pedidos","Pedido");
+                                System.out.println("SE MANDO EL MENSAJE");
+                            }catch (Exception e){
+                                System.out.println("Ocurrio un error");
+                                Utilidades.crearLog(applicationContext,"Ocurrió un error al enviar el lsitado de pedidos");
+                            }
+                        }
+
+                    }
+
 
                     if(body.getOrigin().contentEquals(Modules.USUARIO.toString().toLowerCase())){
                         //Llega un mensaje desde el modulo usuarios
@@ -79,7 +116,7 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
                             }
                             String mensajeCompleto = String.join("--!--##-->>DELIMITER<<--##--!--", mensajes);
                             try{
-                                Utilidades.enviarMensaje(mensajeCompleto,Modules.USUARIO,"Productos","Producto");
+                                Utilidades.enviarArray(mensajeCompleto,Modules.USUARIO,"Productos","Producto");
                                 System.out.println(mensajeCompleto);
                                 System.out.println("SE MANDO EL MENSAJE");
                             }catch (Exception e){
@@ -134,7 +171,8 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
 
         //Comienza a consumir utilizando un hilo secundario
         consumer.consume(consumerConnection, Modules.E_COMMERCE);
-        Utilidades.enviarMensaje("Hola",Modules.E_COMMERCE, "Prueba","");
+        //Utilidades.enviarMensaje("Hola",Modules.E_COMMERCE, "Prueba","");
+       //Utilidades.logingInterno(broker,"e_commerce","","8^3&927#!q4W&649^%","");
 
     }
 
