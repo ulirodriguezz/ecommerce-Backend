@@ -38,7 +38,7 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
         );
 
         Connection consumerConnection = broker.startConnection();
-
+        //HOla
         //Redefino el callback para los mensajes recibidos.
         Consumer consumer = new Consumer(new CallbackInterface() {
             @Override
