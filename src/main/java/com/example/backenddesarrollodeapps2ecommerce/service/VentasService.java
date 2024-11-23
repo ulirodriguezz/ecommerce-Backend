@@ -1,6 +1,7 @@
 package com.example.backenddesarrollodeapps2ecommerce.service;
 
 import com.example.backenddesarrollodeapps2ecommerce.model.dao.VentasDAO;
+import com.example.backenddesarrollodeapps2ecommerce.model.entities.EstadoVenta;
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.VentaEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -39,15 +40,15 @@ public class VentasService {
             throw new Error("Ocurrió un error");
         }
 
-
     }
 
     public void save(VentaEntity venta) {
         try{
+            venta.setEstado(EstadoVenta.PAGADO);
             ventasDAO.save(venta);
         }catch (Throwable e){
             e.printStackTrace();
-            throw new Error("Ocurrió un error");
+            throw new Error(e.getMessage());
         }
 
     }

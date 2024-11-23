@@ -18,6 +18,7 @@ public class VentaEntity {
     private Integer cantidadDeProductos;
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Integer> productos;
+    @Enumerated(EnumType.ORDINAL)
     private EstadoVenta estado;
     @ManyToMany
     List<ProductoEntity> productosRel;
@@ -80,6 +81,7 @@ public class VentaEntity {
     public void setEstado(EstadoVenta estado) {
         this.estado = estado;
     }
+
 
     @Override
     public String toString() {

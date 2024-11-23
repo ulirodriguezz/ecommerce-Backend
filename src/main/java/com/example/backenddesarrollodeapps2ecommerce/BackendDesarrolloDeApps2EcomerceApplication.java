@@ -18,6 +18,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import java.util.Date;
 import java.util.List;
 
 @SpringBootApplication
+@EnableScheduling
 public class BackendDesarrolloDeApps2EcomerceApplication {
 
     public static <Usuario> void main(String[] args) throws Exception {
@@ -38,7 +40,6 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
         );
 
         Connection consumerConnection = broker.startConnection();
-        //HOla
         //Redefino el callback para los mensajes recibidos.
         Consumer consumer = new Consumer(new CallbackInterface() {
             @Override
@@ -50,7 +51,9 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
                     if(body.getUseCase().contentEquals("Prueba")){
                         System.out.println(payload);
                     }
-
+                    if(body.getOrigin().contentEquals(Modules.E_COMMERCE.toString().toLowerCase())){
+                        System.out.println(payload);
+                    }
                     if(body.getOrigin().contentEquals(Modules.GESTION_INTERNA.toString().toLowerCase())){
                         System.out.println("Pedido desde gestion interna...");
                         System.out.println("Username: "+ payload);
@@ -97,7 +100,6 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
                             try{
                                 VentaEntity venta = Utilities.convertBody(body, VentaEntity.class);
                                 ventasService.save(venta);
-                                System.out.println(venta);
                             }catch (Exception e){
                                 e.printStackTrace();
                                 System.out.println("No se pudo convertir");
@@ -169,10 +171,12 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
             }
         });
 
+        String resp = "";
         //Comienza a consumir utilizando un hilo secundario
         consumer.consume(consumerConnection, Modules.E_COMMERCE);
         //Utilidades.enviarMensaje("Hola",Modules.E_COMMERCE, "Prueba","");
-       //Utilidades.logingInterno(broker,"e_commerce","","8^3&927#!q4W&649^%","");
+       //Utilidades.logingInterno(broker,"e_commerce","8^3&927#!q4W&649^%");
+       //Utilidades.registerInterno(broker,"ulises","ulirodrigueze@gmail.com","123admin","Ulises","Rodriguez");
 
     }
 
