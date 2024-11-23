@@ -10,6 +10,7 @@ import com.example.backenddesarrollodeapps2ecommerce.model.entities.LogEntity;
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.ProductoEntity;
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.TallesEnum;
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.VentaEntity;
+import com.example.backenddesarrollodeapps2ecommerce.scheduled.ManejadorDeSesiones;
 import com.example.backenddesarrollodeapps2ecommerce.service.ProductoService;
 import com.example.backenddesarrollodeapps2ecommerce.service.VentasService;
 import com.rabbitmq.client.Connection;
@@ -32,6 +33,7 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
     public static <Usuario> void main(String[] args) throws Exception {
         ApplicationContext applicationContext = SpringApplication.run(BackendDesarrolloDeApps2EcomerceApplication.class, args);
         final VentasService ventasService = applicationContext.getBean(VentasService.class);
+        final ManejadorDeSesiones manejadosDeSesiones = applicationContext.getBean(ManejadorDeSesiones.class);
         Broker broker = new Broker(
                 "3.142.225.39",
                5672,
@@ -175,7 +177,6 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
         //Comienza a consumir utilizando un hilo secundario
         consumer.consume(consumerConnection, Modules.E_COMMERCE);
         //Utilidades.enviarMensaje("Hola",Modules.E_COMMERCE, "Prueba","");
-       //Utilidades.logingInterno(broker,"e_commerce","8^3&927#!q4W&649^%");
        //Utilidades.registerInterno(broker,"ulises","ulirodrigueze@gmail.com","123admin","Ulises","Rodriguez");
 
     }

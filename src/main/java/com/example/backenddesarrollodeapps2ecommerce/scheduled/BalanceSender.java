@@ -14,13 +14,30 @@ import org.springframework.stereotype.Component;
 public class BalanceSender {
     @Autowired
     BalanceService balanceService;
-    @Scheduled(fixedDelay = 1000 * 60 * 60 * 24)
+    @Autowired
+    ManejadorDeSesiones manejadorDeSesiones;
+    boolean error;
+    public BalanceSender(){
+        this.error = false;
+    }
+    @Scheduled(fixedDelay = 1000 * 60 * 60 * 24 * 15)
     public void enviarBalance(){
        BalanceDTO balance = new BalanceDTO(balanceService.getBalance());
         try {
-            Utilidades.enviarMensaje(Utilities.convertClass(balance),Modules.GESTION_FINANCIERA,"balance","balance");
+            Utilidades.enviarMensaje(Utilities.convertClass(balance),Modules.GESTION_FINANCIERA,"balance","balance",manejadorDeSesiones.getTokenJWTModulo());
         } catch (Exception e) {
             System.out.println("ERROR AL ENVIAR BALANCE");
+            this.error = true;
         }
     }
+    @Scheduled(fixedDelay = 1000 * 60 * 5)
+    private void reintentar()
+    {
+        if(this.error == true){
+            System.out.println("---BALANCE: Reenviando el balance");
+            this.error = false;
+            enviarBalance();
+        }
+    }
+
 }

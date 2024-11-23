@@ -42,6 +42,23 @@ public final class Utilidades {
         broker.endConnection(publisherConnection);
 
     }
+    public static void enviarMensaje(String mensaje, Modules moduloDestino, String usecase, String target,String token) throws Exception {
+        Broker broker = new Broker(
+                "3.142.225.39",
+                5672,
+                "e_commerce",
+                "8^3&927#!q4W&649^%"
+        );
+        Connection publisherConnection = broker.startConnection();
+
+        Publisher publisher = new Publisher(Modules.E_COMMERCE);
+        System.out.println("Mensaje: "+ mensaje);
+
+        publisher.publish(publisherConnection,mensaje, moduloDestino, usecase, token, Types.JSON,target,"600",USER);
+
+        broker.endConnection(publisherConnection);
+
+    }
     public static void enviarMensaje(String mensaje, Modules moduloDestino,Modules moduloOrigen, String usecase, String target) throws Exception {
         Broker broker = new Broker(
                 "3.142.225.39",
@@ -89,7 +106,7 @@ public final class Utilidades {
         broker.endConnection(publisherConnection);
 
     }
-    public static void logingInterno(Broker broker, String username, String password){
+    public static String logingInterno(Broker broker, String username, String password){
         username = "\""+username+"\"";
         password = "\""+password+"\"";
 
@@ -105,7 +122,7 @@ public final class Utilidades {
         }catch (Exception e) {
             e.printStackTrace();
             System.out.println("ERROR EN EL LOGIN CORE");
-            return;
+            return "";
         }
         Authenticator auth = new Authenticator(Modules.E_COMMERCE);
         try{
@@ -115,7 +132,7 @@ public final class Utilidades {
             System.out.println("ERROR EN EL LOGIN CORE (Response)");
         }
         broker.endConnection(connection);
-        System.out.println("Response: "+response);
+        return response;
     }
     public static void registerInterno(Broker broker, String username, String email, String password, String nombre, String apellido){
         username = "\""+username+"\"";
