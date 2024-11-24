@@ -1,6 +1,5 @@
 package com.example.backenddesarrollodeapps2ecommerce.service;
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.example.backenddesarrollodeapps2ecommerce.model.dao.ProductoDAO;
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.ProductoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
