@@ -21,7 +21,7 @@ public class ProductoController {
     ProductoService prodService;
     @Autowired
     S3Service s3Service;
-    @PostMapping("/productos/{idProducto}/imagen")
+/*    @PostMapping("/productos/{idProducto}/imagen")
     public ResponseEntity<?> productPost(@RequestBody MultipartFile img, @PathVariable Long idProducto) {
         try {
             System.out.println("---IMAGEN....");
@@ -32,7 +32,7 @@ public class ProductoController {
             return new ResponseEntity<>(new Mensaje("Error interno"), HttpStatus.NOT_ACCEPTABLE);
         }
 
-    }
+    }*/
     @PostMapping("/productos")
     public ResponseEntity<?> productPost(@RequestBody ProductoEntity product) {
         try {

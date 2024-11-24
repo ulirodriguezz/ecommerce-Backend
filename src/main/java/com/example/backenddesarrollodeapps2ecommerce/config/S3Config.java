@@ -14,10 +14,10 @@ public class S3Config {
 
     @Value("${s3region}")
     private String region;
-    @Bean
+/*    @Bean
     public AmazonS3 s3(){
         AWSCredentials awsCredentials = new BasicAWSCredentials("AKIAYRH5NBICBW7XSK2V","OjdZG7nmVCZZf6fSRMKNY6kPT/DdsD/NzmbZ8iqj");
         return  AmazonS3ClientBuilder.standard().withRegion(region)
                 .withCredentials(new AWSStaticCredentialsProvider(awsCredentials)).build();
-    }
+    }*/
 }

@@ -20,7 +20,7 @@ public class S3Service {
     @Autowired
     private ProductoDAO productoDAO;
 
-    public void saveFile(MultipartFile file, Long idProducto){
+/*    public void saveFile(MultipartFile file, Long idProducto){
         String originalFileName = file.getOriginalFilename();
         try {
             String name = "";
@@ -46,5 +46,5 @@ public class S3Service {
         fos.close();
         return file;
 
-    }
+    }*/
 }
