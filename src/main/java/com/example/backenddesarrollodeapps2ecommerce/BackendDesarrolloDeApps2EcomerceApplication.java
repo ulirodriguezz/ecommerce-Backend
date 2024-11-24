@@ -42,7 +42,7 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
                 "8^3&927#!q4W&649^%"
         );
 
-        Connection consumerConnection = broker.startConnection();
+        //Connection consumerConnection = broker.startConnection();
         //Redefino el callback para los mensajes recibidos.
         Consumer consumer = new Consumer(new CallbackInterface() {
             @Override
@@ -161,7 +161,7 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
 
         String resp = "";
         //Comienza a consumir utilizando un hilo secundario
-        consumer.consume(consumerConnection, Modules.E_COMMERCE);
+        //consumer.consume(consumerConnection, Modules.E_COMMERCE);
         //Utilidades.enviarMensaje("Hola",Modules.E_COMMERCE, "Prueba","");
         //Utilidades.registerInterno(broker,"ulises","ulirodrigueze@gmail.com","123admin","Ulises","Rodriguez");
 

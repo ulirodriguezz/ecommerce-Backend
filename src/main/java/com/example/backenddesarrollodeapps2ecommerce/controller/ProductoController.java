@@ -2,11 +2,13 @@ package com.example.backenddesarrollodeapps2ecommerce.controller;
 
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.ProductoEntity;
 import com.example.backenddesarrollodeapps2ecommerce.service.ProductoService;
+import com.example.backenddesarrollodeapps2ecommerce.service.S3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -14,6 +16,23 @@ import java.util.List;
 @RequestMapping("")
 public class ProductoController {
 
+
+    @Autowired
+    ProductoService prodService;
+    @Autowired
+    S3Service s3Service;
+    @PostMapping("/productos/{idProducto}/imagen")
+    public ResponseEntity<?> productPost(@RequestBody MultipartFile img, @PathVariable Long idProducto) {
+        try {
+            System.out.println("---IMAGEN....");
+            System.out.println(img.getOriginalFilename());
+            s3Service.saveFile(img,idProducto);
+            return new ResponseEntity<>(new Mensaje("Producto registrado correctamente"), HttpStatus.OK);
+        } catch (Throwable e) {
+            return new ResponseEntity<>(new Mensaje("Error interno"), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+    }
     @PostMapping("/productos")
     public ResponseEntity<?> productPost(@RequestBody ProductoEntity product) {
         try {
@@ -24,8 +43,6 @@ public class ProductoController {
         }
 
     }
-    @Autowired
-    ProductoService prodService;
     @GetMapping ("/productos")
     public ResponseEntity<?> productGetAll(/*@PathVariable int page*/) {
         try {

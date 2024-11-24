@@ -28,6 +28,8 @@ public class ProductoEntity {
     private Set<String> caracteristicas;
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<TallesEnum> talles;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> fotos;
     @ManyToOne
     @JoinColumn(name = "idProveedor",referencedColumnName = "idProveedor",insertable = false,updatable = false)
     private ProveedorEntity proveedor;
@@ -158,5 +160,13 @@ public class ProductoEntity {
 
     public void setTotalVendido(Double totalVendido) {
         this.totalVendido = totalVendido;
+    }
+
+    public Set<String> getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(Set<String> fotos) {
+        this.fotos = fotos;
     }
 }
