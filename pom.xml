@@ -27,11 +27,11 @@
         <url/>
     </scm>
     <dependencies>
-        <dependency>
+<!--        <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk</artifactId>
             <version>1.12.778</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.rabbitmq</groupId>
             <artifactId>amqp-client</artifactId>
