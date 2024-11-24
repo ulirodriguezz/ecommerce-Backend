@@ -65,6 +65,7 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
                         VentaEntity venta;
                         List<String> nombres;
                         try {
+                            System.out.println("ID del parseado: "+ Long.valueOf(payload).longValue());
                             venta = ventasService.getByID(Long.valueOf(payload).longValue());
                             nombres = ventasService.getNombresProductos(venta.getProductos());
 
@@ -105,7 +106,7 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
                             }
                             String mensajeCompleto = String.join("--!--##-->>DELIMITER<<--##--!--", mensajes);
                             try{
-                                Utilidades.enviarArray(mensajeCompleto,Modules.USUARIO,"Productos","Producto");
+                                Utilidades.enviarArray(mensajeCompleto,Modules.USUARIO,"Productos","Producto",manejadosDeSesiones.getTokenJWTModulo());
                                 System.out.println(mensajeCompleto);
                                 System.out.println("SE MANDO EL MENSAJE");
                             }catch (Exception e){
@@ -139,7 +140,7 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
                                 }
                                 String mensajeCompleto = String.join("--!--##-->>DELIMITER<<--##--!--", mensajes);
                                 try{
-                                    Utilidades.enviarArray(mensajeCompleto,Modules.USUARIO,"Pedidos",username);
+                                    Utilidades.enviarArray(mensajeCompleto,Modules.USUARIO,"Pedidos",username,manejadosDeSesiones.getTokenJWTModulo());
                                     System.out.println("SE MANDO EL MENSAJE");
                                 }catch (Exception e){
                                     System.out.println("Ocurrio un error");
@@ -161,8 +162,9 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
         String resp = "";
         //Comienza a consumir utilizando un hilo secundario
         consumer.consume(consumerConnection, Modules.E_COMMERCE);
+        Utilidades.enviarMensaje("13",Modules.E_COMMERCE,"Prueba","Pedido",manejadosDeSesiones.getTokenJWTModulo());
         //Utilidades.enviarMensaje("Hola",Modules.E_COMMERCE, "Prueba","");
-       //Utilidades.registerInterno(broker,"ulises","ulirodrigueze@gmail.com","123admin","Ulises","Rodriguez");
+        //Utilidades.registerInterno(broker,"ulises","ulirodrigueze@gmail.com","123admin","Ulises","Rodriguez");
 
     }
 

@@ -5,11 +5,13 @@ import com.example.backenddesarrollodeapps2ecommerce.model.dao.LogDAO;
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.LogEntity;
 import com.rabbitmq.client.Connection;
 import netscape.javascript.JSObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
 import java.lang.reflect.Type;
 
 public final class Utilidades {
+
     private static String USER = "{ user : e_commerce, password : 8^3&927#!q4W&649^% }";
 
     public static void enviarMensaje(Broker broker, String mensaje, Modules moduloPublisher, Modules moduloDestino, String usecase, String target) throws Exception {
@@ -71,12 +73,12 @@ public final class Utilidades {
         Publisher publisher = new Publisher(moduloOrigen);
         System.out.println("Mensaje: "+ mensaje);
 
-        publisher.publish(publisherConnection,mensaje, moduloDestino, usecase, "", Types.JSON,target,"600",USER);
+        publisher.publish(publisherConnection,mensaje, moduloDestino, usecase, "", Types.JSON,target,"200",USER);
 
         broker.endConnection(publisherConnection);
 
     }
-    public static void enviarArray(String mensaje, Modules moduloDestino, String usecase, String target) throws Exception {
+    public static void enviarArray(String mensaje, Modules moduloDestino, String usecase, String target,String token) throws Exception {
         Broker broker = new Broker(
                 "3.141.117.124",
                 5672,
@@ -88,12 +90,12 @@ public final class Utilidades {
         Publisher publisher = new Publisher(Modules.E_COMMERCE);
         System.out.println("Mensaje: "+ mensaje);
 
-        publisher.publish(publisherConnection,mensaje, moduloDestino, usecase, "", Types.ARRAY,target,"600",USER);
+        publisher.publish(publisherConnection,mensaje, moduloDestino, usecase, token, Types.ARRAY,target,"200",USER);
 
         broker.endConnection(publisherConnection);
 
     }
-    public static void enviarMensaje(Broker broker, String mensaje, Modules moduloPublisher, Modules moduloDestino, String usecase, String target, String status) throws Exception {
+    public static void enviarMensaje(Broker broker, String mensaje, Modules moduloPublisher, Modules moduloDestino, String usecase, String target, String status,String token) throws Exception {
 
         Connection publisherConnection = broker.startConnection();
 
@@ -101,7 +103,7 @@ public final class Utilidades {
 
         System.out.println("Mensaje: "+ mensaje);
 
-        publisher.publish(publisherConnection,mensaje, moduloDestino, usecase, "", Types.JSON,target,status,USER);
+        publisher.publish(publisherConnection,mensaje, moduloDestino, usecase, token, Types.JSON,target,status,USER);
 
         broker.endConnection(publisherConnection);
 

@@ -4,6 +4,7 @@ import ar.edu.uade.Broker;
 import ar.edu.uade.Modules;
 import com.example.backenddesarrollodeapps2ecommerce.core.dtos.Utilidades;
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.UsuarioEntity;
+import com.example.backenddesarrollodeapps2ecommerce.scheduled.ManejadorDeSesiones;
 import com.example.backenddesarrollodeapps2ecommerce.service.UsuariosService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -25,6 +26,8 @@ public class AuthController {
     UsuariosService usuariosService;
     @Autowired
     private SecretKey secretKey;
+    @Autowired
+    private ManejadorDeSesiones manejadorDeSesiones;
     @GetMapping("/healthcheck")
     public ResponseEntity<?> healthcheck() {
         return new ResponseEntity<>(new Mensaje("UP"), HttpStatus.OK);
@@ -50,16 +53,11 @@ public class AuthController {
 
         return new ResponseEntity<>(new Token(token), HttpStatus.OK);
     }
-    @PostMapping("/mensajeGi")
+    @PostMapping("/prueba")
     public ResponseEntity<?> mensajeGI(@RequestBody String username) {
-        Broker broker = new Broker(
-                "3.142.225.39",
-                5672,
-                "e_commerce",
-                "8^3&927#!q4W&649^%"
-        );
+
         try {
-            Utilidades.enviarMensaje(broker,username, Modules.GESTION_INTERNA,Modules.E_COMMERCE,"Reclamos","Pedido");
+            Utilidades.enviarMensaje("HOla que tal",Modules.E_COMMERCE,"Prueba","Hola",manejadorDeSesiones.getTokenJWTModulo());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

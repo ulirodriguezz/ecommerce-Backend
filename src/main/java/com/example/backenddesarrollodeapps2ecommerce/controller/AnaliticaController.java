@@ -41,7 +41,7 @@ public class AnaliticaController {
     @PostMapping("/ventas")
     public ResponseEntity<?> postVentas(@RequestBody VentaEntity venta) {
         Broker broker = new Broker(
-                "3.142.225.39",
+                "3.141.117.124",
                 5672,
                 "e_commerce",
                 "8^3&927#!q4W&649^%"

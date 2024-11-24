@@ -51,6 +51,8 @@ public class VentasService {
            VentaEntity v = this.ventasDAO.findById(idVenta);
            return v;
         }catch (Throwable e){
+            System.out.println("ERROR: No se pudo obtener la venta");
+            e.printStackTrace();
             throw e;
         }
     }
@@ -60,6 +62,7 @@ public class VentasService {
             venta.setEstado(EstadoVenta.PAGADO);
             ventasDAO.save(venta);
         }catch (Throwable e){
+
             e.printStackTrace();
             throw new Error(e.getMessage());
         }
@@ -79,9 +82,16 @@ public class VentasService {
         try{
             for(Integer id : ids){
                 ProductoEntity p = productoDAO.getPorID(id);
-                nombres.add(p.getNombre());
+                if(p == null){
+                    nombres.add("Producto Eliminado (ID:"+id+")");
+                }
+                else {
+                    nombres.add(p.getNombre());
+                }
             }
         }catch (Throwable e){
+            System.out.println("ERROR: No se pudieron converitr los nombres");
+            e.printStackTrace();
             throw e;
         }
         return nombres;
