@@ -24,7 +24,7 @@ public class ProductoDAO{
         if(page != 1)
         startItem = page  * PAGESIZE + 1 ;
         Session session = em.unwrap(Session.class);
-        Query query = session.createQuery("FROM ProductoEntity AS p WHERE  p.idProducto > 0 order by p.idProducto ASC ", ProductoEntity.class);
+        Query query = session.createQuery("FROM ProductoEntity AS p WHERE  p.idProducto > 0 AND p.stockActual > 0 order by p.idProducto ASC ", ProductoEntity.class);
         query.setMaxResults(PAGESIZE).setFirstResult(startItem);
         if(query.getResultList().isEmpty())
             throw new EmptyResultDataAccessException("No hay productos",1);

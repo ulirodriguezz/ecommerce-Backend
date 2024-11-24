@@ -54,6 +54,17 @@ public class AnaliticaController {
         }
 
     }
+    @PutMapping("/ventas")
+    public ResponseEntity<?> updateVentas(@RequestBody VentaEntity venta) {
+        try {
+            System.out.println("UPDATE VENTA: id = "+ venta.getIdVenta());
+            ventasService.update(venta);
+            return new ResponseEntity<>(new Mensaje("venta registrada"), HttpStatus.OK);
+        }catch (Throwable e) {
+            return new ResponseEntity<>(new Mensaje("Error al modificar"), HttpStatus.NOT_ACCEPTABLE);
+        }
+
+    }
     @GetMapping("/compras")
     public ResponseEntity<?> comprasGetAll(/*@PathVariable int page*/) {
         try {

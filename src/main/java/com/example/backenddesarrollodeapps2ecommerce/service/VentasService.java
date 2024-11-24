@@ -1,18 +1,23 @@
 package com.example.backenddesarrollodeapps2ecommerce.service;
 
+import com.example.backenddesarrollodeapps2ecommerce.model.dao.ProductoDAO;
 import com.example.backenddesarrollodeapps2ecommerce.model.dao.VentasDAO;
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.EstadoVenta;
+import com.example.backenddesarrollodeapps2ecommerce.model.entities.ProductoEntity;
 import com.example.backenddesarrollodeapps2ecommerce.model.entities.VentaEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class VentasService {
     @Autowired
     private VentasDAO ventasDAO;
+    @Autowired
+    private ProductoDAO productoDAO;
 
     public List<VentaEntity> getAllVentas(int page){
         try {
@@ -41,6 +46,14 @@ public class VentasService {
         }
 
     }
+    public VentaEntity getByID(long idVenta){
+        try{
+           VentaEntity v = this.ventasDAO.findById(idVenta);
+           return v;
+        }catch (Throwable e){
+            throw e;
+        }
+    }
 
     public void save(VentaEntity venta) {
         try{
@@ -51,5 +64,26 @@ public class VentasService {
             throw new Error(e.getMessage());
         }
 
+    }
+
+    public void update(VentaEntity venta) {
+        try {
+            ventasDAO.update(venta);
+        }catch (Throwable e){
+            e.printStackTrace();
+            throw e;
+        }
+    }
+    public List<String>getNombresProductos(List<Integer> ids){
+        List<String> nombres = new ArrayList<>();
+        try{
+            for(Integer id : ids){
+                ProductoEntity p = productoDAO.getPorID(id);
+                nombres.add(p.getNombre());
+            }
+        }catch (Throwable e){
+            throw e;
+        }
+        return nombres;
     }
 }

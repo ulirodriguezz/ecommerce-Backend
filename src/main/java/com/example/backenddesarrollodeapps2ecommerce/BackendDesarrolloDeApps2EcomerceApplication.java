@@ -1,6 +1,7 @@
 package com.example.backenddesarrollodeapps2ecommerce;
 
 import ar.edu.uade.*;
+import com.example.backenddesarrollodeapps2ecommerce.core.dtos.PedidoDTO;
 import com.example.backenddesarrollodeapps2ecommerce.core.dtos.ProductoDTO;
 import com.example.backenddesarrollodeapps2ecommerce.core.dtos.Utilidades;
 import com.example.backenddesarrollodeapps2ecommerce.core.dtos.VentaDTO;
@@ -35,7 +36,7 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
         final VentasService ventasService = applicationContext.getBean(VentasService.class);
         final ManejadorDeSesiones manejadosDeSesiones = applicationContext.getBean(ManejadorDeSesiones.class);
         Broker broker = new Broker(
-                "3.142.225.39",
+                "3.141.117.124",
                5672,
                 "e_commerce",
                 "8^3&927#!q4W&649^%"
@@ -52,44 +53,28 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
                     String payload = body.getPayload();
                     if(body.getUseCase().contentEquals("Prueba")){
                         System.out.println(payload);
+                        return;
                     }
                     if(body.getOrigin().contentEquals(Modules.E_COMMERCE.toString().toLowerCase())){
                         System.out.println(payload);
                     }
                     if(body.getOrigin().contentEquals(Modules.GESTION_INTERNA.toString().toLowerCase())){
-                        System.out.println("Pedido desde gestion interna...");
-                        System.out.println("Username: "+ payload);
-                        List<String> mensajes = new ArrayList<>();
-                        List<VentaEntity> pedidos = new ArrayList<>();
-                        String username = payload;
+                        System.out.println("--GI: Llegó un pedido...");
+                        System.out.println("ID del pedido: "+ payload);
+                        PedidoDTO pedido;
+                        VentaEntity venta;
+                        List<String> nombres;
                         try {
-                            pedidos = ventasService.getVentasByUsername(payload);
-                        }catch (EmptyResultDataAccessException e){
-                            Utilidades.enviarMensaje("No se encontraron pedidos",Modules.GESTION_INTERNA,"Pedidos","Error");
+                            venta = ventasService.getByID(Long.valueOf(payload).longValue());
+                            nombres = ventasService.getNombresProductos(venta.getProductos());
+
+                        }catch (Throwable e){
+                            System.out.println("--GI: Error al obtener la venta");
+                            Utilidades.enviarMensaje("Error",Modules.GESTION_INTERNA,"PedidoR","Error");
                             return;
                         }
-                        catch (Exception e){
-                            Utilidades.enviarMensaje("Otro error",Modules.GESTION_INTERNA,"Pedidos","Error");
-                            return;
-                        }
-                        if(pedidos.size() == 1){
-                            Utilidades.enviarMensaje(Utilities.convertClass(new VentaDTO(pedidos.get(0))),Modules.GESTION_INTERNA,"Pedidos","Pedido");
-                        }
-                        else {
-                            for(VentaEntity p: pedidos){
-                                VentaDTO dto = new VentaDTO(p);
-                                String m = Utilities.convertClass(dto);
-                                mensajes.add(m);
-                            }
-                            String mensajeCompleto = String.join("--!--##-->>DELIMITER<<--##--!--", mensajes);
-                            try{
-                                Utilidades.enviarArray(mensajeCompleto,Modules.GESTION_INTERNA,"Pedidos","Pedido");
-                                System.out.println("SE MANDO EL MENSAJE");
-                            }catch (Exception e){
-                                System.out.println("Ocurrio un error");
-                                Utilidades.crearLog(applicationContext,"Ocurrió un error al enviar el lsitado de pedidos");
-                            }
-                        }
+                        pedido = new PedidoDTO(venta,nombres);
+                        Utilidades.enviarMensaje(Utilities.convertClass(pedido),Modules.GESTION_INTERNA,"PedidoR","Pedido");
 
                     }
 

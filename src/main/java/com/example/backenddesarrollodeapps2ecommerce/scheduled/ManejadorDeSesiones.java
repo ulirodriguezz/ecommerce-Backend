@@ -10,18 +10,19 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ManejadorDeSesiones {
-    Broker broker = new Broker(
-            "3.142.225.39",
-            5672,
-            "e_commerce",
-            "8^3&927#!q4W&649^%"
-    );
+
     String tokenJWTModulo;
     @Scheduled(fixedDelay = 1000 * 60 * 60 * 24)
-    public void logingInterno(){
-        System.out.println("---LOGIN: Loggeando al modulo en GI");
+    public  void logingInterno( ){
+        System.out.println("---LOGIN: Iniciando login a GI...");
+        Broker broker = new Broker(
+                "3.141.117.124",
+                5672,
+                "e_commerce",
+                "8^3&927#!q4W&649^%"
+        );
         String username = "\"e_commerce\"";
-        String password = "\"\"8^3&927#!q4W&649^%\"\"";
+        String password = "\"8^3&927#!q4W&649^%\"";
 
 
         String json = "{\"user\" : "+username+ "," +
@@ -34,21 +35,19 @@ public class ManejadorDeSesiones {
             connection = broker.startConnection();
         }catch (Exception e) {
             e.printStackTrace();
-            System.out.println("---LOGIN: Error en el login (CORE)");
-            tokenJWTModulo = response;
-            return;
+            System.out.println("---LOGIN: ERROR en el login (CORE)");
+           return;
         }
         Authenticator auth = new Authenticator(Modules.E_COMMERCE);
         try{
             response = auth.authenticate(connection,json);
         }catch (Exception e){
             e.printStackTrace();
-            System.out.println("---LOGIN: Error en el login (atenticacion)");
-            tokenJWTModulo = response;
+            System.out.println("---LOGIN: ERROR en el login (Autenticacion)");
             return;
         }
         broker.endConnection(connection);
-        System.out.println("---LOGIN: Modulo loggeado con exito");
+        System.out.println("---LOGIN: Login realizado. Token: "+ response);
         tokenJWTModulo = response;
     }
 

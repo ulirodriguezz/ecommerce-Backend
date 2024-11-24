@@ -27,7 +27,7 @@ public final class Utilidades {
     }
     public static void enviarMensaje(String mensaje, Modules moduloDestino, String usecase, String target) throws Exception {
         Broker broker = new Broker(
-                "3.142.225.39",
+                "3.141.117.124",
                 5672,
                 "e_commerce",
                 "8^3&927#!q4W&649^%"
@@ -44,7 +44,7 @@ public final class Utilidades {
     }
     public static void enviarMensaje(String mensaje, Modules moduloDestino, String usecase, String target,String token) throws Exception {
         Broker broker = new Broker(
-                "3.142.225.39",
+                "3.141.117.124",
                 5672,
                 "e_commerce",
                 "8^3&927#!q4W&649^%"
@@ -61,7 +61,7 @@ public final class Utilidades {
     }
     public static void enviarMensaje(String mensaje, Modules moduloDestino,Modules moduloOrigen, String usecase, String target) throws Exception {
         Broker broker = new Broker(
-                "3.142.225.39",
+                "3.141.117.124",
                 5672,
                 "e_commerce",
                 "8^3&927#!q4W&649^%"
@@ -78,7 +78,7 @@ public final class Utilidades {
     }
     public static void enviarArray(String mensaje, Modules moduloDestino, String usecase, String target) throws Exception {
         Broker broker = new Broker(
-                "3.142.225.39",
+                "3.141.117.124",
                 5672,
                 "e_commerce",
                 "8^3&927#!q4W&649^%"

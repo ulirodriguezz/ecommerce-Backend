@@ -42,7 +42,8 @@ public class VentasDAO {
     {
         List<VentaEntity> ventas;
         Session sesionActual = em.unwrap(Session.class);
-        Query query = sesionActual.createQuery("FROM VentaEntity AS v  where v.nombreUsuario ="+ username+ " ORDER BY v.fecha ASC", VentaEntity.class);
+        Query query = sesionActual.createQuery("FROM VentaEntity AS v  where v.nombreUsuario =:username ORDER BY v.fecha ASC", VentaEntity.class);
+        query.setParameter("username",username);
         ventas = query.getResultList();
         if(ventas.isEmpty())
             throw new EmptyResultDataAccessException("No hay ventas",1);
@@ -116,5 +117,21 @@ public class VentasDAO {
         }
     }
 
+    @Transactional
+    public void update(VentaEntity venta) {
+        Session currenSession = this.em.unwrap(Session.class);
+        VentaEntity ventaDB = currenSession.get(VentaEntity.class,venta.getIdVenta());
+        if(ventaDB == null)
+            throw new EmptyResultDataAccessException("No se encontro la venta",1);
+        ventaDB.setEstado(venta.getEstado());
+        currenSession.persist(ventaDB);
+    }
 
+    public VentaEntity findById(long idVenta) {
+        Session currenSession = this.em.unwrap(Session.class);
+        VentaEntity ventaDB = currenSession.get(VentaEntity.class,idVenta);
+        if(ventaDB == null)
+            throw new EmptyResultDataAccessException("No se encontró la venta",1);
+        return ventaDB;
+    }
 }
