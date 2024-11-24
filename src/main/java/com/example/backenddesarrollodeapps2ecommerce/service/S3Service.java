@@ -11,12 +11,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-@Service
+/*@Service*/
 public class S3Service {
     @Value("${bucketName}")
     private String bucketName;
 
-    @Autowired
+ /*   @Autowired*/
     private ProductoDAO productoDAO;
 
 /*    public void saveFile(MultipartFile file, Long idProducto){

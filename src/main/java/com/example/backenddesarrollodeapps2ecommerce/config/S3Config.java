@@ -3,7 +3,7 @@ package com.example.backenddesarrollodeapps2ecommerce.config;
 
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
+/*@Configuration*/
 public class S3Config {
 
 

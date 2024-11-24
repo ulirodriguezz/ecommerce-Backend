@@ -19,8 +19,8 @@ public class ProductoController {
 
     @Autowired
     ProductoService prodService;
-    @Autowired
-    S3Service s3Service;
+/*    @Autowired
+    S3Service s3Service;*/
 /*    @PostMapping("/productos/{idProducto}/imagen")
     public ResponseEntity<?> productPost(@RequestBody MultipartFile img, @PathVariable Long idProducto) {
         try {
