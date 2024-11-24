@@ -123,13 +123,13 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
                             try {
                                pedidos = ventasService.getVentasByUsername(payload);
                             }catch (EmptyResultDataAccessException e){
-                                Utilidades.enviarMensaje("No se encontraron pedidos",Modules.USUARIO,"Pedidos","Error");
+                                Utilidades.enviarMensaje("No se encontraron pedidos",Modules.USUARIO,"Pedidos","Error",manejadosDeSesiones.getTokenJWTModulo());
                             }
                             catch (Exception e){
-                                Utilidades.enviarMensaje("Otro error",Modules.USUARIO,"Pedidos","Error");
+                                Utilidades.enviarMensaje("Otro error",Modules.USUARIO,"Pedidos","Error",manejadosDeSesiones.getTokenJWTModulo());
                             }
                             if(pedidos.size() == 1){
-                                Utilidades.enviarMensaje(Utilities.convertClass(new VentaDTO(pedidos.get(0))),Modules.USUARIO,"Pedidos",username);
+                                Utilidades.enviarMensaje(Utilities.convertClass(new VentaDTO(pedidos.get(0))),Modules.USUARIO,"Pedidos",username,manejadosDeSesiones.getTokenJWTModulo());
                             }
                             else {
                                 for(VentaEntity p: pedidos){
@@ -162,7 +162,6 @@ public class BackendDesarrolloDeApps2EcomerceApplication {
         String resp = "";
         //Comienza a consumir utilizando un hilo secundario
         consumer.consume(consumerConnection, Modules.E_COMMERCE);
-        Utilidades.enviarMensaje("13",Modules.E_COMMERCE,"Prueba","Pedido",manejadosDeSesiones.getTokenJWTModulo());
         //Utilidades.enviarMensaje("Hola",Modules.E_COMMERCE, "Prueba","");
         //Utilidades.registerInterno(broker,"ulises","ulirodrigueze@gmail.com","123admin","Ulises","Rodriguez");
 
